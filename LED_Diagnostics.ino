@@ -88,7 +88,7 @@ void statusCheck() {
   err = 0;
    
   //alt = bmp.pressureToAltitude(seaLvlPressure, pressure);
-  if (CHECK_BMP())
+  if (CHECK_BMP()){
   //if (abs(P-seaLvlPressure) > seaLvlPressure*0.1){
     err += 100;
   }
