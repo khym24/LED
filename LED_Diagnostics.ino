@@ -1,11 +1,13 @@
+
+#include <MacRocketry_GPS_Shield.h>
+
 #define redPin 3
 #define bluePin 6
 #define greenPin 5
 //#define button 2
 
 int message = 0;
-
-bool buttonState = false;
+MacRocketry_GPS_Shield gps;
 
 void displayLED(int msg){
   switch (msg){
@@ -62,7 +64,26 @@ void setup(){
 
   //Serial.begin(9600);
 }
-void loop() {
+
+boolean GPS_COM_CHECK(){
+  if (gps.fix>0) return true;
+  return false;
+}
+
+boolean GPS_SAT_CHECK(){
+  if (gps.fix==1||gps.fix==2) return true;
+  return false;
+}
+
+boolean CHECK_BMP(){
+
+}
+
+boolean SD_CHECK(){
+
+}
+
+void statusCheck() {
   
   err = 0;
    
@@ -81,6 +102,7 @@ void loop() {
   if(case != PRE_LAUNCH)
     return; 
 }
+
 /*
 void loop() { 
   if(GPS_CHECK() || BMP_CHECK() || SD_CHECK()){
