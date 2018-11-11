@@ -5,11 +5,9 @@
 class LED_Diagnostics
 {
 public:
-  void statusCheck(void);
+  void statusCheck(int fix);
   
 private:
-  boolean GPS_COM_CHECK(void);
-  boolean GPS_SAT_CHECK(void);
   boolean CHECK_BMP(void);
   boolean SD_CHECK(void);
   void displayLED(void);
