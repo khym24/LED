@@ -88,14 +88,14 @@ void statusCheck() {
   err = 0;
    
   //alt = bmp.pressureToAltitude(seaLvlPressure, pressure);
-  if (CHECK_BMP)
+  if (CHECK_BMP())
   //if (abs(P-seaLvlPressure) > seaLvlPressure*0.1){
     err += 100;
   }
-  if (MacRocketry_GPS_Shield::readData() == false || MacRocketry_GPS_Shield::bufferSerial() == false){
+  if (GPS_SAT_CHECK() || GPS_COM_CHECK()){
     err += 10;
   }
-  if(MacRocketry_SD_Logger::start() == false){
+  if(SD_CHECK()){
     err += 1;
   }
   displayLED(err); 
