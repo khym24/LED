@@ -1,5 +1,5 @@
 
-#include <MacRocketry_GPS_Shield.h>
+#include <MacRocketry_GPS_Shield.h> //header file
 
 #define redPin 3
 #define bluePin 6
@@ -46,7 +46,7 @@ void displayLED(int msg){
       analogWrite(bluePin, 255);
       analogWrite(greenPin, 255);
       break;
-    case 7: //white ->
+    case -1: //white -> not used
       analogWrite(redPin, 255);
       analogWrite(bluePin, 255);
       analogWrite(greenPin, 255);
@@ -92,10 +92,10 @@ void statusCheck() {
   //if (abs(P-seaLvlPressure) > seaLvlPressure*0.1){
     err += 100;
   }
-  if (GPS_COM_CHECK() == false || GPS_SAT_CHECK() == false){
+  if (MacRocketry_GPS_Shield::readData() == false || MacRocketry_GPS_Shield::bufferSerial() == false){
     err += 10;
   }
-  if(SD_CHECK()==false){
+  if(MacRocketry_SD_Logger::start() == false){
     err += 1;
   }
   displayLED(err); 
