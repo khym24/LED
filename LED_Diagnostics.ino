@@ -1,3 +1,4 @@
+
 #include <MacRocketry_GPS_Shield.h> //header file
 
 #define redPin 3
@@ -6,8 +7,7 @@
 //#define button 2
 
 int message = 0;
-
-bool buttonState = false;
+MacRocketry_GPS_Shield gps;
 
 void displayLED(int msg){
   switch (msg){
@@ -64,25 +64,45 @@ void setup(){
 
   //Serial.begin(9600);
 }
-void loop() {
+
+boolean GPS_COM_CHECK(){
+  if (gps.fix>0) return true;
+  return false;
+}
+
+boolean GPS_SAT_CHECK(){
+  if (gps.fix==1||gps.fix==2) return true;
+  return false;
+}
+
+boolean CHECK_BMP(){
+
+}
+
+boolean SD_CHECK(){
+
+}
+
+void statusCheck() {
   
   err = 0;
    
   //alt = bmp.pressureToAltitude(seaLvlPressure, pressure);
-  if (CHECK_BMP)
+  if (CHECK_BMP())
   //if (abs(P-seaLvlPressure) > seaLvlPressure*0.1){
     err += 100;
   }
-  if (MacRocketry_GPS_Shield::readData() == false || MacRocketry_GPS_Shield::bufferSerial() == false){
+  if (GPS_SAT_CHECK() || GPS_COM_CHECK()){
     err += 10;
   }
-  if(MacRocketry_SD_Logger::start() == false){
+  if(SD_CHECK()){
     err += 1;
   }
   displayLED(err); 
   if(case != PRE_LAUNCH)
     return; 
 }
+
 /*
 void loop() { 
   if(GPS_CHECK() || BMP_CHECK() || SD_CHECK()){
