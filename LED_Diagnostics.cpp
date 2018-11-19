@@ -1,5 +1,7 @@
 #include <LED_Diagnostics.h>
 #include <MacRocketry_GPS_Shield.h>
+#include <MacRocketry_SD_Logger.h>
+#include <cmath>
 
 LED_Diagnostics::LED_Diagnostics(){
   pinMode(redPin, OUTPUT);
@@ -7,13 +9,13 @@ LED_Diagnostics::LED_Diagnostics(){
   pinMode(greenPin, OUTPUT);
 }
 
-void LED_Diagnostics::statusCheck(int fix){
+void LED_Diagnostics::statusCheck(int fix, float gps_alt, float bmp_alt){
   err = 0;
-  if (CHECK_BMP()){
+  if (CHECK_BMP(float gps_alt, float bmp_alt)){   //checks if the bmp and gps altitude values match up
     err += 100;
   }
-  if (fix>0){
-    err += 10;
+  if (fix = 0){     //checks that the gps is spitting out values
+    err += 10;      //
   }
   if(SD_CHECK()){
     err += 1;
@@ -23,12 +25,16 @@ void LED_Diagnostics::statusCheck(int fix){
   //  return; 
 }
 
-boolean LED_Diagnostics::CHECK_BMP(){
-
+boolean LED_Diagnostics::CHECK_BMP(float gps_alt, float bmp_alt){
+  if (abs(gps_alt-bmp_alt) > 1.0)) {    // 1.0 is a place holder number, run tests to get a better range
+    return true;
+  }
+  return false;
 }
 
-boolean LED_Diagnostics::SD_CHECK(){
-
+boolean LED_Diagnostics::SD_CHECK(String path){
+  bool connectFile = openFile(path);
+  String checkVal = 
 }
 
 void LED_Diagnostics::displayLED(int msg){
