@@ -1,13 +1,20 @@
 #include <LED_Diagnostics.h>
 #include <MacRocketry_GPS_Shield.h>
 
-LED_Diagnostics::LED_Diagnostics(){
+LED_Diagnostics::LED_Diagnostics(){   // initialize pins
   pinMode(redPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
   pinMode(greenPin, OUTPUT);
 }
 
-void LED_Diagnostics::statusCheck(int fix){
+/*  dis how error check work:
+
+hundreds - BMP    tens - GPS    ones - SD
+0 = good to go    1 = error
+
+*/
+
+void LED_Diagnostics::statusCheck(int fix){   // will take more arguments here
   err = 0;
   if (CHECK_BMP()){
     err += 100;
@@ -24,11 +31,11 @@ void LED_Diagnostics::statusCheck(int fix){
 }
 
 boolean LED_Diagnostics::CHECK_BMP(){
-
+  // things
 }
 
 boolean LED_Diagnostics::SD_CHECK(){
-
+  // things
 }
 
 void LED_Diagnostics::displayLED(int msg){
