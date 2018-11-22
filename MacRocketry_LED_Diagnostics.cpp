@@ -1,7 +1,8 @@
-#include <LED_Diagnostics.h>
-#include <MacRocketry_GPS_Shield.h>
+#include <MacRocketry_LED_Diagnostics.h>
 
-LED_Diagnostics::LED_Diagnostics(){   // initialize pins
+MacRocketry_LED_Diagnostics::MacRocketry_LED_Diagnostics(){   //constructor
+  Serial.begin(9600); //not sure if this should go here
+  
   pinMode(redPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
   pinMode(greenPin, OUTPUT);
@@ -10,19 +11,19 @@ LED_Diagnostics::LED_Diagnostics(){   // initialize pins
 /*  dis how error check work:
 
 hundreds - BMP    tens - GPS    ones - SD
-0 = good to go    1 = error
+0 = good to go    >1 = error
 
 */
 
-void LED_Diagnostics::statusCheck(int fix){   // will take more arguments here
+void MacRocketry_LED_Diagnostics::StatusCheck(boolean BMP_test, int fix, boolean SD_test){   // will take more arguments here for BMP and SD
   err = 0;
-  if (CHECK_BMP()){
+  if (BMP_test){
     err += 100;
   }
-  if (fix>0){
+  if (fix == 0){
     err += 10;
   }
-  if(SD_CHECK()){
+  if(SD_test){
     err += 1;
   }
   displayLED(err); 
@@ -30,15 +31,12 @@ void LED_Diagnostics::statusCheck(int fix){   // will take more arguments here
   //  return; 
 }
 
-boolean LED_Diagnostics::CHECK_BMP(){
-  // things
+boolean MacRocketry_LED_Diagnostics::CHECK_ALT(float BMP_alt, float GPS_alt){
+  //compare BMP and GPS outputs
+  //return true if they don't agree within a certain range
 }
 
-boolean LED_Diagnostics::SD_CHECK(){
-  // things
-}
-
-void LED_Diagnostics::displayLED(int msg){
+void MacRocketry_LED_Diagnostics::displayLED(int msg){
   switch (msg){
     case 110//red -> BMP and GPS errors
       analogWrite(redPin, 255);
@@ -65,7 +63,7 @@ void LED_Diagnostics::displayLED(int msg){
       analogWrite(bluePin, 0);
       analogWrite(greenPin, 255);
       break;
-    case 011: //cyan -> sensor + SD error
+    case 11: //cyan -> sensor + SD error
       analogWrite(redPin, 0);
       analogWrite(bluePin, 255);
       analogWrite(greenPin, 255);
@@ -75,11 +73,10 @@ void LED_Diagnostics::displayLED(int msg){
       analogWrite(bluePin, 255);
       analogWrite(greenPin, 255);
       break;
-    case -1: //white -> not used
+    default: //white -> used if the input message matches none of the above for some reason
       analogWrite(redPin, 255);
       analogWrite(bluePin, 255);
       analogWrite(greenPin, 255);
       break;
   }
-  
 }
